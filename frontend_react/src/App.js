@@ -1,47 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import NavBar from './components/NavBar';
+import MoodForm from './components/MoodForm';
+import MoodSummary from './components/MoodSummary';
+import MoodChart from './components/MoodChart';
+import MoodList from './components/MoodList';
+import { useLocalMoods } from './hooks/useLocalMoods';
 
 // PUBLIC_INTERFACE
 function App() {
-  const [theme, setTheme] = useState('light');
-
-  // Effect to apply theme to document element
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
+  /** Root App composing components and layout. */
+  const {
+    moods,
+    addMood,
+    deleteMood,
+    total,
+    avg7,
+    avg30,
+    streakBest,
+    timeSeriesPoints,
+    last7Bars,
+  } = useLocalMoods();
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <NavBar />
+      <main className="container" style={{ paddingTop: 16, paddingBottom: 24 }}>
+        <div className="row two">
+          <section>
+            <MoodForm onAdd={addMood} />
+          </section>
+          <section>
+            <MoodSummary avg7={avg7} avg30={avg30} streakBest={streakBest} total={total} />
+          </section>
+        </div>
+
+        <div className="section">
+          <MoodChart timeSeriesPoints={timeSeriesPoints} last7Bars={last7Bars} />
+        </div>
+
+        <div className="section">
+          <MoodList moods={moods} onDelete={deleteMood} />
+        </div>
+      </main>
     </div>
   );
 }

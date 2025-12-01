@@ -1,82 +1,74 @@
-# Lightweight React Template for KAVIA
+# Mood Tracker (React)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+A simple, modern Mood Tracker that lets users log their mood daily and visualize trends over time. Built with React and localStorage as the MVP data store, themed with the Ocean Professional palette.
 
 ## Features
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- Ocean Professional theme (primary #2563EB, secondary/success #F59E0B, error #EF4444, text #111827, background #f9fafb, surface #ffffff)
+- Theme toggle with persistence (light/dark)
+- Log mood entries with mood 1–5, date, tags, and optional note
+- Summary metrics (average mood 7/30 days, best streak, total entries)
+- SVG-based line and bar charts (no external chart libraries)
+- Recent entries list with delete action
+- Keyboard-accessible controls, aria labels, visible focus states
+- Responsive layout (single-column mobile, multi-column on larger screens)
+
+## Data Model
+
+MoodEntry:
+- id: string
+- dateISO: string (YYYY-MM-DD)
+- mood: number (1-5)
+- tags: string[]
+- note: string
 
 ## Getting Started
 
-In the project directory, you can run:
+Install dependencies and start the development server:
 
-### `npm start`
-
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-### `npm test`
-
-Launches the test runner in interactive watch mode.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-## Customization
-
-### Colors
-
-The main brand colors are defined as CSS variables in `src/App.css`:
-
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
+```bash
+npm install
+npm start
 ```
 
-### Components
+Open http://localhost:3000 in your browser.
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
+Run tests:
 
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
+```bash
+npm test
+```
 
-## Learn More
+Build for production:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm run build
+```
 
-### Code Splitting
+## Environment Variables
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+MVP uses localStorage. For a future API integration, you can optionally set:
 
-### Analyzing the Bundle Size
+- REACT_APP_API_BASE: Base URL of the API (not required now)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+See src/hooks/useLocalMoods.js for a TODO on switching to API in the future.
 
-### Making a Progressive Web App
+## Accessibility and Browser Support
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Keyboard accessible: all interactive controls are reachable via keyboard with visible focus rings.
+- ARIA attributes used for better screen reader support.
+- Works on the last two versions of modern evergreen browsers (Chrome, Firefox, Safari, Edge).
 
-### Advanced Configuration
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- src/components
+  - NavBar.jsx: title + theme toggle
+  - MoodForm.jsx: add mood entries
+  - MoodSummary.jsx: summary cards
+  - MoodChart.jsx: SVG charts
+  - MoodList.jsx: recent entries with delete
+- src/hooks
+  - useLocalMoods.js: localStorage state and selectors
+- src/utils
+  - theme.js, colors.js: theming utilities
+- src/index.css, src/App.css: base styles and components
